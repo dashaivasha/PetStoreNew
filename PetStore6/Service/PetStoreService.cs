@@ -15,5 +15,12 @@ namespace PetStore6.Service
         public async Task<Pet?> GetPet(string id) =>
         await _httpClient.GetFromJsonAsync<Pet>(
             $"pet/{id}");
+
+        public HttpResponseMessage PutPet(Pet pet)
+        {
+            var response =  _httpClient.PutAsJsonAsync($"pet/", pet).Result;
+            return response;
+        }
+
     }
 }

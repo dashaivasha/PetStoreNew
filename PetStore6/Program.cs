@@ -1,3 +1,4 @@
+using PetStore6.Models;
 using PetStore6.Service;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,8 +9,10 @@ builder.Services.AddHttpClient<PetStoreService>(httpClient =>
 });
 var petStoreService = builder.Services.BuildServiceProvider().GetService<PetStoreService>();
 var responsePet = await petStoreService.GetPet("22");
+responsePet.Name = "Amaya";
+var response = petStoreService.PutPet(responsePet);
 var app = builder.Build();
 
-app.MapGet("/", () => petStoreService.GetPet("22"));
+app.MapGet("/", () => response);
 
 app.Run();
