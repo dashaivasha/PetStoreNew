@@ -1,18 +1,27 @@
 using PetStore6.Models;
-using PetStore6.Service;
+using PetStore6.Services;
 
-var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddHttpClient<PetStoreService>(httpClient =>
+namespace PetStore6
 {
-    httpClient.BaseAddress = new Uri("https://petstore.swagger.io/v2/");
-    httpClient.DefaultRequestHeaders.Add("Accept", "application/json");
-});
-var petStoreService = builder.Services.BuildServiceProvider().GetService<PetStoreService>();
-var responsePet = await petStoreService.GetPet("22");
-responsePet.Name = "Amaya";
-var response = petStoreService.PutPet(responsePet);
-var app = builder.Build();
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
+            var builder = WebApplication.CreateBuilder(args);
+            builder.Services.AddHttpClient<PetService>(httpClient =>
+            {
+                httpClient.BaseAddress = new Uri("https://petstore.swagger.io/v2/");
+                httpClient.DefaultRequestHeaders.Add("Accept", "application/json");
+            });
+            var PetService = builder.Services.BuildServiceProvider().GetService<PetService>();
+           // var responsePet = await PetService.GetPet("22");
+         //   responsePet.Name = "Amaya";
+            var response = PetService.GetPet("22");
+            var app = builder.Build();
 
-app.MapGet("/", () => response);
+            app.MapGet("/", () => response);
 
-app.Run();
+            app.Run();
+        }
+    }
+}
